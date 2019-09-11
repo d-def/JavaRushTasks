@@ -14,5 +14,6 @@ public class GameObject {
         this.isMine=isMine;
         this.countMineNeighbors=0;
         this.isOpen = false;
+        this.isFlag = false;
     }
 }

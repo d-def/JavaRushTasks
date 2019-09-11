@@ -54,13 +54,18 @@ public class MinesweeperGame extends Game {
     //знаю что костыли, надо в этом методе и подсчитывать всё
     private GameObject[] getNeighbors(GameObject initialObject){
         int i=0;
+        int newObjectX;
+        int newObjectY;
         GameObject[] neighbors = new GameObject[8];
-        for (GameObject[] gArray : gameField){
-            for (GameObject g : gArray) {
-                if (Math.abs(g.x -initialObject.x)<=1 && Math.abs(g.y-initialObject.y)<=1 ) {
-                    if (g.x== initialObject.x && g.y == initialObject.y){
-                } else {
-                        neighbors[i++]=g;}
+        for (int deltaX=-1;deltaX<=1;deltaX++){
+            for (int deltaY=-1;deltaY<=1;deltaY++){
+                newObjectX = initialObject.x + deltaX;
+                newObjectY= initialObject.y + deltaY;
+                if ((newObjectX >= 0 && newObjectX <= SIDE-1 && newObjectY >= 0 && newObjectY <= SIDE-1) && !(deltaX==0 && deltaY==0)) {
+                    GameObject g= gameField[newObjectY][newObjectX];
+                    if (g != null) {
+                        neighbors[i++]=g;
+                    }
                 }
             }
         }
@@ -75,9 +80,17 @@ public class MinesweeperGame extends Game {
             if (tile.isMine) {
                 setCellValue(x, y, MINE);
                 setCellColor(x, y, Color.RED);
-            } else {
+            } else if (tile.countMineNeighbors !=0) {
                 setCellNumber(x, y, tile.countMineNeighbors);
                 setCellColor(x, y, Color.BLUE);
+            } else {
+                setCellColor(x,y,Color.GREEN);
+                setCellValue(x, y, "");
+                for (GameObject neighbor : getNeighbors(tile)) {
+                    if (neighbor != null) {
+                        openTile(neighbor.x, neighbor.y);
+                    }
+                }
             }
         }
     }
