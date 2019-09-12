@@ -3,18 +3,21 @@ package com.javarush.games.snake;
 import com.javarush.engine.cell.*;
 
 public class SnakeGame extends Game {
-    public final static int HEIGHT=15;
-    public final static int WIDTH=15;
+    public final static int HEIGHT = 15;
+    public final static int WIDTH = 15;
 
     @Override
     public void initialize() {
         setScreenSize(WIDTH, HEIGHT);
-        startGame();
+        createGame();
     }
 
-    private void startGame(){
+    private void createGame() {
         drawScene();
+        Apple apple = new Apple(7, 7);
+        apple.draw(this);
     }
+
     private void drawScene() {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
