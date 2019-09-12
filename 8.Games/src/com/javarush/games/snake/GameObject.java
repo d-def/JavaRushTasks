@@ -1,6 +1,8 @@
 package com.javarush.games.snake;
 
 
+import com.javarush.engine.cell.Game;
+
 public class GameObject {
     public int x;
     public int y;
