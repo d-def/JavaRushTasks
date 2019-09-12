@@ -41,4 +41,10 @@ public class Snake {
         }
     }
 
+    public void move()
+    {
+        GameObject snakeHead = snakeParts.get(0);
+        snakeParts.add(new GameObject(snakeHead.x,snakeHead.y ));
+        snakeParts.remove(snakeParts.size()-1);
+    };
 }

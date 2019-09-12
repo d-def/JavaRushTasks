@@ -6,6 +6,7 @@ public class SnakeGame extends Game {
     public final static int HEIGHT = 15;
     public final static int WIDTH = 15;
     private Snake snake;
+    private int turnDelay;
 
     @Override
     public void initialize() {
@@ -13,8 +14,17 @@ public class SnakeGame extends Game {
         createGame();
     }
 
+    @Override
+    public void onTurn (int step)
+    {
+        snake.move();
+        drawScene();
+    }
+
     private void createGame() {
         snake = new Snake(WIDTH/2,HEIGHT/2);
+        turnDelay=300;
+        setTurnTimer(turnDelay);
         drawScene();
     }
 
