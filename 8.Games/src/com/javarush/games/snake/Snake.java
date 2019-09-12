@@ -43,8 +43,21 @@ public class Snake {
 
     public void move()
     {
+        createNewHead();
+        removeTail();
+    }
+    public GameObject createNewHead() {
+        int deltax=0;
+        int deltay=0;
+        if (direction==Direction.DOWN) { deltay=1;}
+        if (direction==Direction.LEFT) { deltax=-1;}
+        if (direction==Direction.RIGHT) { deltax=1;}
+        if (direction==Direction.UP) { deltay=-1;}
         GameObject snakeHead = snakeParts.get(0);
-        snakeParts.add(new GameObject(snakeHead.x,snakeHead.y ));
+        return new GameObject(snakeHead.x+deltax,snakeHead.y+deltay );
+    }
+
+    public void removeTail() {
         snakeParts.remove(snakeParts.size()-1);
-    };
+    }
 }
