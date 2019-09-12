@@ -21,9 +21,18 @@ public class SnakeGame extends Game {
         drawScene();
     }
 
+    @Override
+    public void onKeyPress(Key key){
+        //в идеале нужно бы библиотечку на проверку енамов
+        if (key.LEFT.equals(key)) {snake.setDirection(Direction.LEFT);}
+        if (key.UP.equals(key)) {snake.setDirection(Direction.UP);}
+        if (key.DOWN.equals(key)) {snake.setDirection(Direction.DOWN);}
+        if (key.RIGHT.equals(key)) {snake.setDirection(Direction.RIGHT);}
+    }
+
     private void createGame() {
         snake = new Snake(WIDTH/2,HEIGHT/2);
-        turnDelay=300;
+        turnDelay=1000;
         setTurnTimer(turnDelay);
         drawScene();
     }
@@ -31,7 +40,7 @@ public class SnakeGame extends Game {
     private void drawScene() {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
-                setCellColor(x, y, Color.DARKGREEN);
+                setCellValueEx(x, y, Color.DARKGREEN, "");
             }
         }
         snake.draw(this);

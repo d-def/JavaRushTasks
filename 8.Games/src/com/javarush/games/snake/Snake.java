@@ -22,7 +22,23 @@ public class Snake {
     }
 
     public void setDirection(Direction direction) {
-        this.direction = direction;
+        switch (direction){
+            case RIGHT:
+                if (this.direction == Direction.LEFT) return;
+                this.direction = direction;
+                break;
+            case LEFT:
+                if (this.direction == Direction.RIGHT) return;
+                this.direction = direction;
+                break;
+            case UP:
+                if (this.direction == Direction.DOWN) return;
+                this.direction = direction;
+                break;
+            case DOWN:
+                if (this.direction == Direction.UP) return;
+                this.direction = direction;
+        }
     }
 
     public void draw(Game game){
@@ -43,9 +59,16 @@ public class Snake {
 
     public void move()
     {
-        createNewHead();
-        removeTail();
+        GameObject newHead = createNewHead();
+        if (newHead.x<0 || newHead.x >=SnakeGame.WIDTH || newHead.y <0 || newHead.y >= SnakeGame.HEIGHT) {
+            isAlive = false;
+        } else {
+            snakeParts.add(0, newHead);
+            removeTail();
+        }
     }
+
+
     public GameObject createNewHead() {
         int deltax=0;
         int deltay=0;
