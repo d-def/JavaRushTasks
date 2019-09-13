@@ -21,23 +21,32 @@ public class Snake {
         direction = Direction.LEFT;
     }
 
+    public int getLength ()
+    {
+        return snakeParts.size();
+    }
+
     public void setDirection(Direction direction) {
-        switch (direction){
-            case RIGHT:
-                if (this.direction == Direction.LEFT) return;
-                this.direction = direction;
-                break;
-            case LEFT:
-                if (this.direction == Direction.RIGHT) return;
-                this.direction = direction;
-                break;
-            case UP:
-                if (this.direction == Direction.DOWN) return;
-                this.direction = direction;
-                break;
-            case DOWN:
-                if (this.direction == Direction.UP) return;
-                this.direction = direction;
+        if (snakeParts.get(0).y == snakeParts.get(1).y) {
+            switch (direction) {
+                case UP:
+                    if (this.direction == Direction.DOWN) return;
+                    this.direction = direction;
+                    break;
+                case DOWN:
+                    if (this.direction == Direction.UP) return;
+                    this.direction = direction;
+            }
+        } else {
+            switch (direction) {
+                case RIGHT:
+                    if (this.direction == Direction.LEFT) return;
+                    this.direction = direction;
+                    break;
+                case LEFT:
+                    if (this.direction == Direction.RIGHT) return;
+                    this.direction = direction;
+            }
         }
     }
 
