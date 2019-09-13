@@ -50,27 +50,30 @@ public class Snake {
         {
             color = Color.RED;
         }
-        game.setCellValueEx(snakeHead.x, snakeHead.y, Color.NONE,HEAD_SIGN, color, 75);
-        for (int i=1; i<snakeParts.size(); i++) {
+        for (int i=0; i<snakeParts.size(); i++) {
             GameObject snakeBodyPart = snakeParts.get(i);
-            game.setCellValueEx(snakeBodyPart.x, snakeBodyPart.y, Color.NONE, BODY_SIGN, color, 75);
+            game.setCellValueEx(snakeBodyPart.x, snakeBodyPart.y, Color.NONE,i==0?HEAD_SIGN:BODY_SIGN, color, 75);
         }
     }
 
-    public void move(Apple apple)
-    {
+    public void move(Apple apple) {
         GameObject newHead = createNewHead();
-        if (newHead.x<0 || newHead.x >=SnakeGame.WIDTH || newHead.y <0 || newHead.y >= SnakeGame.HEIGHT) {
+        if (checkCollision(newHead)) {
+            isAlive = false;
+            return;
+        }
+        if (newHead.x < 0 || newHead.x >= SnakeGame.WIDTH || newHead.y < 0 || newHead.y >= SnakeGame.HEIGHT) {
             isAlive = false;
         } else {
             if (newHead.x == apple.x && newHead.y == apple.y) {
-                apple.isAlive=false;
+                apple.isAlive = false;
             } else {
                 removeTail();
             }
-            snakeParts.add(0, newHead);
         }
+        snakeParts.add(0, newHead);
     }
+
 
 
     public GameObject createNewHead() {
@@ -86,5 +89,12 @@ public class Snake {
 
     public void removeTail() {
         snakeParts.remove(snakeParts.size()-1);
+    }
+
+    public boolean checkCollision (GameObject possibleCollision){
+        for (GameObject p:snakeParts) {
+            if (possibleCollision.x==p.x && possibleCollision.y == p.y){return true;}
+        }
+        return false;
     }
 }
