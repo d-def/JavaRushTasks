@@ -7,10 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Game2048 extends Game {
-    private static final int SIDE=4;
+    private static final int SIDE = 4;
     private int[][] gameField = new int[SIDE][SIDE];
-    private Map<Integer,Color> valueToColor = new HashMap<Integer, Color>();
-    private int[] test = new int[4];
+    private Map<Integer, Color> valueToColor = new HashMap<Integer, Color>();
 
     @Override
     public void initialize() {
@@ -21,35 +20,44 @@ public class Game2048 extends Game {
         drawScene();
     }
 
-    private void test(){
-        test[0]=0;
-        test[1]=0;
-        test[2]=0;
-        test[3]=0;
-        compressRow(test);
+    private void test() {
+        int[] test1 = {4, 4, 0, 0};
+        int[] test2 = {2, 2, 2, 2};
+        int[] test3 = {4, 2, 2, 0};
+        int[] test4 = {0, 2, 2, 0};
+        int[] test5 = {0, 2, 2, 2};
+        int[] test6 = {4, 0, 4, 0};
+        int[] test7 = {0, 0, 0, 0};
+        boolean test11=(mergeRow(test1));
+        boolean test22=(mergeRow(test2));
+        boolean test33=(mergeRow(test3));
+        boolean test44=(mergeRow(test4));
+        boolean test55=(mergeRow(test5));
+        boolean test66=(mergeRow(test6));
+        boolean test77=(mergeRow(test7));
     }
 
-    private void createGame(){
+    private void createGame() {
         createNewNumber();
         createNewNumber();
     }
 
-    private void drawScene(){
-        for (int x=0;x<SIDE;x++){
-            for (int y=0;y<SIDE;y++){
-                setCellColoredNumber(x,y,gameField[y][x]);
+    private void drawScene() {
+        for (int x = 0; x < SIDE; x++) {
+            for (int y = 0; y < SIDE; y++) {
+                setCellColoredNumber(x, y, gameField[y][x]);
             }
         }
     }
 
-    private void createNewNumber(){
+    private void createNewNumber() {
         int value = getRandomNumber(10);
         boolean isValueSet = false;
         do {
-            int x=getRandomNumber(SIDE);
-            int y=getRandomNumber(SIDE);
-            if (gameField[y][x]==0) {
-                isValueSet=true;
+            int x = getRandomNumber(SIDE);
+            int y = getRandomNumber(SIDE);
+            if (gameField[y][x] == 0) {
+                isValueSet = true;
                 if (value == 9) {
                     gameField[y][x] = 4;
                 } else {
@@ -74,13 +82,13 @@ public class Game2048 extends Game {
         valueToColor.put(2048, Color.PINK);
     }
 
-    private Color getColorByValue (int value){
+    private Color getColorByValue(int value) {
         return valueToColor.get(value);
     }
 
-    private void setCellColoredNumber (int x, int y, int value){
+    private void setCellColoredNumber(int x, int y, int value) {
         Color color = getColorByValue(value);
-        setCellValueEx(x, y, color, value==0?"":Integer.toString(value));
+        setCellValueEx(x, y, color, value == 0 ? "" : Integer.toString(value));
     }
 
     private boolean compressRow(int[] row) {
@@ -95,18 +103,30 @@ public class Game2048 extends Game {
         }
         if (!Arrays.equals(tempRow, row)) {
             wasChanged = true;
-        }
 
-        for (int i = 0; i < 4; i++) {
-            row[i] = tempRow[i];
         }
+        row=tempRow.clone();
 
         return wasChanged;
     }
 
-//    private boolean mergeRow (int[] row){
-////        for (int i=0;i<4;i++){
-////
-////        }
-//    }
+    private boolean mergeRow(int[] row) {
+        int[] tempRow = row.clone();
+        boolean wasChanged = false;
+        for (int i = 1; i < row.length; i++) {
+            if (tempRow[i] == tempRow[i - 1]) {
+                tempRow[i - 1] = 2 * tempRow[i];
+                tempRow[i] = 0;
+            }
+        }
+        if (!Arrays.equals(tempRow, row)) {
+            wasChanged = true;
+        }
+        row=tempRow.clone();
+        for (int y:row){
+            System.out.print(y);
+        }
+        System.out.println(wasChanged);
+        return wasChanged;
+    }
 }
