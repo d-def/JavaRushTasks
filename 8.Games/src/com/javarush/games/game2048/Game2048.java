@@ -20,6 +20,33 @@ public class Game2048 extends Game {
         drawScene();
     }
 
+    @Override
+    public void onKeyPress(Key key) {
+        switch (key) {
+            case UP: {
+                moveUp();
+                break;
+            }
+            case DOWN: {
+                moveDown();
+                break;
+            }
+            case LEFT: {
+                moveLeft();
+                break;
+            }
+            case RIGHT: {
+                moveRight();
+                break;
+            }
+        }
+    }
+
+    private void moveLeft() {}
+    private void moveRight() {}
+    private void moveUp() {}
+    private void moveDown() {}
+
     private void test() {
         int[] test1 = {4, 4, 0, 0};
         int[] test2 = {2, 2, 2, 2};
@@ -110,23 +137,16 @@ public class Game2048 extends Game {
         return wasChanged;
     }
 
-    private boolean mergeRow(int[] row) {
-        int[] tempRow = row.clone();
+    private boolean mergeRow(int[] row){
         boolean wasChanged = false;
-        for (int i = 1; i < row.length; i++) {
-            if (tempRow[i] == tempRow[i - 1]) {
-                tempRow[i - 1] = 2 * tempRow[i];
-                tempRow[i] = 0;
+        for (int i = 0; i < row.length - 1; i++) {
+            if (row[i] == row[i+1]&&(row[i]!=0)) {
+                row[i] *= 2;
+                row[i+1] = 0;
+                i++;
+                wasChanged = true;
             }
         }
-        if (!Arrays.equals(tempRow, row)) {
-            wasChanged = true;
-        }
-        row=tempRow.clone();
-        for (int y:row){
-            System.out.print(y);
-        }
-        System.out.println(wasChanged);
         return wasChanged;
     }
 }
