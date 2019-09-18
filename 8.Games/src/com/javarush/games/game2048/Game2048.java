@@ -25,27 +25,68 @@ public class Game2048 extends Game {
         switch (key) {
             case UP: {
                 moveUp();
+                drawScene();
                 break;
             }
             case DOWN: {
                 moveDown();
+                drawScene();
                 break;
             }
             case LEFT: {
                 moveLeft();
+                drawScene();
                 break;
             }
             case RIGHT: {
                 moveRight();
+                drawScene();
                 break;
             }
         }
     }
 
-    private void moveLeft() {}
-    private void moveRight() {}
-    private void moveUp() {}
-    private void moveDown() {}
+    private void moveLeft() {
+        int counter = 0;
+        for (int i = 0; i < SIDE; i++) {
+            if (compressRow(gameField[i])) {
+                counter++;
+            }
+            if (mergeRow(gameField[i])) {
+                counter++;
+            }
+            if (compressRow(gameField[i])) {
+                counter++;
+            }
+        }
+        if (counter > 0) {
+            createNewNumber();
+        }
+    }
+
+    private void moveRight() {
+        rotateClockwise();
+        rotateClockwise();
+        moveLeft();
+        rotateClockwise();
+        rotateClockwise();
+    }
+
+    private void moveUp() {
+        rotateClockwise();
+        rotateClockwise();
+        rotateClockwise();
+        moveLeft();
+        rotateClockwise();
+    }
+
+    private void moveDown() {
+        rotateClockwise();
+        moveLeft();
+        rotateClockwise();
+        rotateClockwise();
+        rotateClockwise();
+    }
 
     private void test() {
         int[] test1 = {4, 4, 0, 0};
@@ -132,7 +173,9 @@ public class Game2048 extends Game {
             wasChanged = true;
 
         }
-        row=tempRow.clone();
+        for (int i =0; i<4; i++) {
+            row[i]=tempRow[i];
+        }
 
         return wasChanged;
     }
@@ -148,5 +191,15 @@ public class Game2048 extends Game {
             }
         }
         return wasChanged;
+    }
+
+    private void rotateClockwise () {
+        int [][] tempfield = new int[4][4];
+        for (int x=0;x<SIDE;x++) {
+            for (int y=0;y<SIDE;y++){
+                tempfield[x][y]=gameField[SIDE-1-y][x];
+            }
+        }
+        gameField=tempfield.clone();
     }
 }
