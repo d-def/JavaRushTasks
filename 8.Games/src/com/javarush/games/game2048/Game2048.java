@@ -10,11 +10,12 @@ public class Game2048 extends Game {
     private static final int SIDE = 4;
     private int[][] gameField = new int[SIDE][SIDE];
     private Map<Integer, Color> valueToColor = new HashMap<Integer, Color>();
+    private boolean isGameStopped=false;
 
     @Override
     public void initialize() {
         setScreenSize(SIDE, SIDE);
-        test();
+        //test();
         putColorsIntoMap();
         createGame();
         drawScene();
@@ -88,22 +89,22 @@ public class Game2048 extends Game {
         rotateClockwise();
     }
 
-    private void test() {
-        int[] test1 = {4, 4, 0, 0};
-        int[] test2 = {2, 2, 2, 2};
-        int[] test3 = {4, 2, 2, 0};
-        int[] test4 = {0, 2, 2, 0};
-        int[] test5 = {0, 2, 2, 2};
-        int[] test6 = {4, 0, 4, 0};
-        int[] test7 = {0, 0, 0, 0};
-        boolean test11=(mergeRow(test1));
-        boolean test22=(mergeRow(test2));
-        boolean test33=(mergeRow(test3));
-        boolean test44=(mergeRow(test4));
-        boolean test55=(mergeRow(test5));
-        boolean test66=(mergeRow(test6));
-        boolean test77=(mergeRow(test7));
-    }
+//    private void test() {
+//        int[] test1 = {4, 4, 0, 0};
+//        int[] test2 = {2, 2, 2, 2};
+//        int[] test3 = {4, 2, 2, 0};
+//        int[] test4 = {0, 2, 2, 0};
+//        int[] test5 = {0, 2, 2, 2};
+//        int[] test6 = {4, 0, 4, 0};
+//        int[] test7 = {0, 0, 0, 0};
+//        boolean test11=(mergeRow(test1));
+//        boolean test22=(mergeRow(test2));
+//        boolean test33=(mergeRow(test3));
+//        boolean test44=(mergeRow(test4));
+//        boolean test55=(mergeRow(test5));
+//        boolean test66=(mergeRow(test6));
+//        boolean test77=(mergeRow(test7));
+//    }
 
     private void createGame() {
         createNewNumber();
@@ -119,6 +120,11 @@ public class Game2048 extends Game {
     }
 
     private void createNewNumber() {
+        int max = getMaxTileValue();
+        if (max==2048) {
+            win();
+            return;
+        }
         int value = getRandomNumber(10);
         boolean isValueSet = false;
         do {
@@ -133,6 +139,11 @@ public class Game2048 extends Game {
                 }
             }
         } while (!isValueSet);
+    }
+
+    private void win() {
+        showMessageDialog(Color.RED, "Malaca podebil", Color.BLACK, 75);
+        isGameStopped=true;
     }
 
     private void putColorsIntoMap() {
@@ -202,4 +213,17 @@ public class Game2048 extends Game {
         }
         gameField=tempfield.clone();
     }
+
+    private int getMaxTileValue () {
+        int max =2;
+        for (int[] row:gameField){
+            for(int value:row) {
+                if (value>max) {
+                    max=value;
+                }
+            }
+        }
+        return max;
+    }
+
 }
