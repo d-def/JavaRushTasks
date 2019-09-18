@@ -11,6 +11,7 @@ public class Game2048 extends Game {
     private int[][] gameField = new int[SIDE][SIDE];
     private Map<Integer, Color> valueToColor = new HashMap<Integer, Color>();
     private boolean isGameStopped=false;
+    private int score = 0;
 
     @Override
     public void initialize() {
@@ -23,6 +24,18 @@ public class Game2048 extends Game {
 
     @Override
     public void onKeyPress(Key key) {
+        if (isGameStopped) {
+            if (key == Key.SPACE) {
+                isGameStopped = false;
+                createGame();
+                drawScene();
+            }
+            return;
+        }
+        if (!canUserMove()) {
+            gameOver();
+            return;
+        }
         switch (key) {
             case UP: {
                 moveUp();
@@ -45,6 +58,7 @@ public class Game2048 extends Game {
                 break;
             }
         }
+        setScore(score);
     }
 
     private void moveLeft() {
@@ -107,6 +121,9 @@ public class Game2048 extends Game {
 //    }
 
     private void createGame() {
+        score=0;
+        setScore(score);
+        gameField=new int[SIDE][SIDE];
         createNewNumber();
         createNewNumber();
     }
@@ -121,7 +138,7 @@ public class Game2048 extends Game {
 
     private void createNewNumber() {
         int max = getMaxTileValue();
-        if (max==2048) {
+        if (max == 2048) {
             win();
             return;
         }
@@ -143,7 +160,12 @@ public class Game2048 extends Game {
 
     private void win() {
         showMessageDialog(Color.RED, "Malaca podebil", Color.BLACK, 75);
-        isGameStopped=true;
+        isGameStopped = true;
+    }
+
+    private void gameOver() {
+        showMessageDialog(Color.RED, "Proigoral", Color.BLACK, 75);
+        isGameStopped = true;
     }
 
     private void putColorsIntoMap() {
@@ -184,19 +206,21 @@ public class Game2048 extends Game {
             wasChanged = true;
 
         }
-        for (int i =0; i<4; i++) {
-            row[i]=tempRow[i];
+        for (int i = 0; i < 4; i++) {
+            row[i] = tempRow[i];
         }
 
         return wasChanged;
     }
 
-    private boolean mergeRow(int[] row){
+    private boolean mergeRow(int[] row) {
         boolean wasChanged = false;
         for (int i = 0; i < row.length - 1; i++) {
-            if (row[i] == row[i+1]&&(row[i]!=0)) {
+            if (row[i] == row[i + 1] && (row[i] != 0)) {
                 row[i] *= 2;
-                row[i+1] = 0;
+                row[i + 1] = 0;
+                score=score+row[i];
+                setScore(score);
                 i++;
                 wasChanged = true;
             }
@@ -204,26 +228,42 @@ public class Game2048 extends Game {
         return wasChanged;
     }
 
-    private void rotateClockwise () {
-        int [][] tempfield = new int[4][4];
-        for (int x=0;x<SIDE;x++) {
-            for (int y=0;y<SIDE;y++){
-                tempfield[x][y]=gameField[SIDE-1-y][x];
+    private void rotateClockwise() {
+        int[][] tempfield = new int[4][4];
+        for (int x = 0; x < SIDE; x++) {
+            for (int y = 0; y < SIDE; y++) {
+                tempfield[x][y] = gameField[SIDE - 1 - y][x];
             }
         }
-        gameField=tempfield.clone();
+        gameField = tempfield.clone();
     }
 
-    private int getMaxTileValue () {
-        int max =2;
-        for (int[] row:gameField){
-            for(int value:row) {
-                if (value>max) {
-                    max=value;
+    private int getMaxTileValue() {
+        int max = 2;
+        for (int[] row : gameField) {
+            for (int value : row) {
+                if (value > max) {
+                    max = value;
                 }
             }
         }
         return max;
     }
+
+    private boolean canUserMove() {
+        int counter =0;
+        for (int i=0;i<SIDE;i++) {
+            for (int j=0;j<SIDE;j++){
+                int currentValue = gameField[i][j];
+                int nextValueInRow = j==3?0:gameField[i][j+1];
+                int nextValueInColumn = i==3?0:gameField[i+1][j];
+                if (currentValue==0 || currentValue==nextValueInColumn || currentValue == nextValueInRow){
+                    counter++;
+                }
+            }
+        }
+        return counter != 0;
+    }
+
 
 }
