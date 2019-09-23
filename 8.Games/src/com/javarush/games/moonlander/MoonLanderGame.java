@@ -15,7 +15,7 @@ public class MoonLanderGame extends Game {
 
     @Override
     public void onTurn(int step) {
-        rocket.move();
+        rocket.move(isUpPressed, isLeftPressed,isRightPressed );
         drawScene();
     }
 
@@ -23,6 +23,38 @@ public class MoonLanderGame extends Game {
     public void setCellColor(int x, int y, Color color) {
         if (x>=0 && x<WIDTH && y>=0 && y<HEIGHT){
             super.setCellColor(x, y, color);
+        }
+    }
+
+    @Override
+    public void onKeyPress(Key key) {
+        switch (key) {
+            case LEFT:
+                isLeftPressed=true;
+                isRightPressed=false;
+                break;
+            case UP:
+                isUpPressed=true;
+                break;
+            case RIGHT:
+                isRightPressed=true;
+                isLeftPressed=false;
+                break;
+        }
+    }
+
+    @Override
+    public void onKeyReleased(Key key) {
+        switch (key) {
+            case LEFT:
+                isLeftPressed=false;
+                break;
+            case RIGHT:
+                isRightPressed=false;
+                break;
+            case UP:
+                isUpPressed=false;
+                break;
         }
     }
 
