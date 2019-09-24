@@ -16,6 +16,7 @@ public class MoonLanderGame extends Game {
     @Override
     public void onTurn(int step) {
         rocket.move(isUpPressed, isLeftPressed,isRightPressed );
+        check();
         drawScene();
     }
 
@@ -88,4 +89,9 @@ public class MoonLanderGame extends Game {
         landscape=new GameObject(0,25,ShapeMatrix.LANDSCAPE);
 
     }
+
+    private void check(){}
+
+    private void gameOver() {}
+    private void win(){}
 }
