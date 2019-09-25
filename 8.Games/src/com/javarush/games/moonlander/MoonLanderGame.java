@@ -5,6 +5,7 @@ import com.javarush.engine.cell.*;
 public class MoonLanderGame extends Game {
     public static final int WIDTH = 64;
     public static final int HEIGHT = 64;
+    private boolean isGameStopped;
 
     private boolean isUpPressed;
     private boolean isLeftPressed;
@@ -43,6 +44,8 @@ public class MoonLanderGame extends Game {
                 isRightPressed=true;
                 isLeftPressed=false;
                 break;
+            case SPACE:
+                if (isGameStopped) {createGame();}
         }
     }
 
@@ -81,6 +84,7 @@ public class MoonLanderGame extends Game {
         isLeftPressed=false;
         isRightPressed=false;
         isUpPressed=false;
+        isGameStopped=false;
         setTurnTimer(50);
         createGameObjects();
         drawScene();
@@ -106,6 +110,17 @@ public class MoonLanderGame extends Game {
         }
     }
 
-    private void gameOver() {}
-    private void win(){}
+    private void gameOver() {
+        rocket.crash();
+        isGameStopped=true;
+        showMessageDialog(Color.BEIGE, "YOU LOSE!", Color.BLUE, 75);
+        stopTurnTimer();
+    }
+
+    private void win(){
+        rocket.land();
+        isGameStopped=true;
+        showMessageDialog(Color.BEIGE, "YOU WIN!", Color.BLUE, 75);
+        stopTurnTimer();
+    }
 }
