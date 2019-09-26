@@ -18,18 +18,26 @@ public class Rocket extends GameObject {
     public Rocket(double x, double y) {
         super(x, y, ShapeMatrix.ROCKET);
         List<int[][]> downlist;
-        downlist = new ArrayList<> ();
+        downlist = new ArrayList<>();
         List<int[][]> sideList;
-        sideList = new ArrayList<> ();
+        sideList = new ArrayList<>();
         downlist.add(ShapeMatrix.FIRE_DOWN_1);
         downlist.add(ShapeMatrix.FIRE_DOWN_2);
         downlist.add(ShapeMatrix.FIRE_DOWN_3);
-        downFire=new RocketFire(downlist);
+        downFire = new RocketFire(downlist);
         sideList.clear();
         sideList.add(ShapeMatrix.FIRE_SIDE_1);
         sideList.add(ShapeMatrix.FIRE_SIDE_2);
-        leftFire=new RocketFire(sideList);
-        rightFire=new RocketFire(sideList);
+        leftFire = new RocketFire(sideList);
+        rightFire = new RocketFire(sideList);
+    }
+
+    @Override
+    public void draw(Game game) {
+        super.draw(game);
+        downFire.draw(game);
+        leftFire.draw(game);
+        rightFire.draw(game);
     }
 
     public void move(boolean isUpPressed, boolean isLeftPressed, boolean isRightPressed) {
@@ -55,6 +63,7 @@ public class Rocket extends GameObject {
         }
         x += speedX;
         checkBorders();
+        switchFire(isUpPressed, isLeftPressed, isRightPressed);
     }
 
     private void checkBorders() {
@@ -94,11 +103,36 @@ public class Rocket extends GameObject {
         }
         return false;
     }
-    public void land(){
-        y=y-1;
+
+    public void land() {
+        y = y - 1;
     }
 
-    public void crash(){
-        this.matrix=ShapeMatrix.ROCKET_CRASH;
+    public void crash() {
+        this.matrix = ShapeMatrix.ROCKET_CRASH;
+    }
+
+    private void switchFire(boolean isUpPressed, boolean isLeftPressed, boolean isRightPressed) {
+        if (isUpPressed) {
+            downFire.y = this.y + this.height;
+            downFire.x = this.x + (this.width / 2);
+            downFire.show();
+        } else {
+            downFire.hide();
+        }
+        if (isLeftPressed) {
+            leftFire.y = this.y + this.height;
+            leftFire.x = this.x + this.width;
+            leftFire.show();
+        } else {
+            leftFire.hide();
+        }
+        if (isRightPressed) {
+            rightFire.y = this.y + this.height;
+            rightFire.x = this.x - ShapeMatrix.FIRE_SIDE_1[0].length;
+            rightFire.show();
+        } else {
+            rightFire.hide();
+        }
     }
 }
