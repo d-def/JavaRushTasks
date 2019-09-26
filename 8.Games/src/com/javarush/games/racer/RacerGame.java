@@ -13,6 +13,18 @@ public class RacerGame extends Game {
         showGrid(false);
         createGame();
     }
+    
+    @Override
+    public void setCellColor(int x, int y, Color color) {
+        if (x>=0 && x<WIDTH && y>=0 && y<HEIGHT){
+            super.setCellColor(x, y, color);
+        }
+    }
+
+    @Override
+    public void onKeyReleased(Key key) {
+        super.onKeyReleased(key);
+    }
 
     private void createGame() {
         drawScene();
@@ -31,6 +43,7 @@ public class RacerGame extends Game {
                 } else {
                     color = Color.GREEN;
                 }
+                if (x==CENTER_X) {color=Color.WHEAT;}
                 setCellColor(x,y,color);
             }
         }
