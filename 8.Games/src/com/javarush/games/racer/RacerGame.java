@@ -15,6 +15,9 @@ public class RacerGame extends Game {
         setScreenSize(WIDTH,HEIGHT);
         showGrid(false);
         createGame();
+        String a = "2";
+        String b = "2";
+        System.out.println(a+b);
     }
     
     @Override
@@ -22,11 +25,6 @@ public class RacerGame extends Game {
         if (x>=0 && x<WIDTH && y>=0 && y<HEIGHT){
             super.setCellColor(x, y, color);
         }
-    }
-
-    @Override
-    public void onKeyReleased(Key key) {
-        super.onKeyReleased(key);
     }
 
     private void createGame() {
@@ -70,6 +68,16 @@ public class RacerGame extends Game {
             break;
             case LEFT:player.setDirection(Direction.LEFT);
             break;
+        }
+    }
+
+    @Override
+    public void onKeyReleased(Key key) {
+        if (player.getDirection()==Direction.RIGHT && key==Key.RIGHT) {
+            player.setDirection(Direction.NONE);
+        }
+        if (player.getDirection()==Direction.LEFT && key==Key.LEFT) {
+            player.setDirection(Direction.NONE);
         }
     }
 
