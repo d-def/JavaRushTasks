@@ -1,7 +1,7 @@
 package com.javarush.games.racer.road;
 
 import com.javarush.engine.cell.Game;
-import com.javarush.games.racer.GameObject;
+import com.javarush.games.racer.Drawable;
 import com.javarush.games.racer.PlayerCar;
 import com.javarush.games.racer.RacerGame;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class RoadManager {
+public class RoadManager implements Drawable{
     public static final int LEFT_BORDER = RacerGame.ROADSIDE_WIDTH;
     public static final int RIGHT_BORDER = RacerGame.WIDTH - LEFT_BORDER;
     private static final int FIRST_LANE_POSITION = 16;
@@ -17,6 +17,12 @@ public class RoadManager {
     private static final int PLAYER_CAR_DISTANCE = 12;
 
     private List<RoadObject> items = new ArrayList<>();
+
+    private int passedCarsCount=0;
+
+    public int getPassedCarsCount() {
+        return passedCarsCount;
+    }
 
     private RoadObject createRoadObject(RoadObjectType type, int x, int y) {
         switch (type) {
@@ -86,7 +92,11 @@ public class RoadManager {
         Iterator<RoadObject> iterator = items.iterator();
         //можно через лямбды, но я типа так не умею еще
         while (iterator.hasNext()) {
-            if (iterator.next().y >= RacerGame.HEIGHT) {
+            RoadObject object = iterator.next();
+            if (object.y >= RacerGame.HEIGHT) {
+                if (object.type!= RoadObjectType.THORN) {
+                    passedCarsCount++;
+                }
                 iterator.remove();
             }
         }

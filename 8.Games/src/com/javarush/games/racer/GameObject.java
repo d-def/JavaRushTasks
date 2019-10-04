@@ -3,7 +3,7 @@ package com.javarush.games.racer;
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 
-public class GameObject {
+public class GameObject implements Drawable{
     public int x;
     public int y;
     public int width;

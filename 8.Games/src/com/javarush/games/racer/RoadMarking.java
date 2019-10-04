@@ -5,7 +5,7 @@ import com.javarush.engine.cell.Game;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoadMarking {
+public class RoadMarking implements Drawable{
 
     private List<GameObject> roadMarking = new ArrayList<>();
 
