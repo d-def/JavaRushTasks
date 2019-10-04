@@ -32,7 +32,8 @@ public class PlayerCar extends GameObject {
                 break;
         }
     }
+    public  void stop() {
+        this.matrix=ShapeMatrix.PLAYER_DEAD;
+    }
 
-//    7. Метод move() класса PlayerCar должен устанавливать значение полю x, равное RoadManager.LEFT_BORDER, если x < RoadManager.LEFT_BORDER.
-//8. Метод move() класса PlayerCar должен устанавливать значение полю x, равное RoadManager.RIGHT_BORDER - width, если x > RoadManager.RIGHT_BORDER - width.
 }

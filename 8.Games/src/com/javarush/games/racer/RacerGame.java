@@ -9,6 +9,8 @@ public class RacerGame extends Game {
     public static final int CENTER_X = WIDTH/2;
     public static final int ROADSIDE_WIDTH = 14;
 
+    private boolean isGameStopped;
+
     private RoadMarking roadMarking;
     private PlayerCar player;
     private RoadManager roadManager;
@@ -30,6 +32,7 @@ public class RacerGame extends Game {
     }
 
     private void createGame() {
+        isGameStopped=false;
         roadMarking=new RoadMarking();
         player=new PlayerCar();
         roadManager=new RoadManager();
@@ -61,6 +64,7 @@ public class RacerGame extends Game {
 
     private void moveAll() {
         roadMarking.move(player.speed);
+        roadManager.move(player.speed);
         player.move();
 
     }
@@ -68,10 +72,17 @@ public class RacerGame extends Game {
     @Override
     public void onKeyPress(Key key) {
         switch(key){
-            case RIGHT: player.setDirection(Direction.RIGHT);
-            break;
-            case LEFT:player.setDirection(Direction.LEFT);
-            break;
+            case RIGHT:
+                player.setDirection(Direction.RIGHT);
+                break;
+            case LEFT:
+                player.setDirection(Direction.LEFT);
+                break;
+            case SPACE:
+                if (isGameStopped) {createGame();}
+                break;
+            case UP:
+                player.speed=2;
         }
     }
 
@@ -83,11 +94,27 @@ public class RacerGame extends Game {
         if (player.getDirection()==Direction.LEFT && key==Key.LEFT) {
             player.setDirection(Direction.NONE);
         }
+        if (key== Key.UP) {
+            player.speed=1;
+        }
     }
 
     @Override
     public void onTurn(int step) {
+        if (roadManager.checkCrush(player)) {
+            gameOver();
+            drawScene();
+            return;
+        }
         moveAll();
+        roadManager.generateNewRoadObjects(this);
         drawScene();
+    }
+
+    private void gameOver() {
+        player.stop();
+        isGameStopped=true;
+        showMessageDialog(Color.BEIGE, "YOU LOSE!", Color.BLUE, 75);
+        stopTurnTimer();
     }
 }
